@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-md-4">
         <UserFollowingsCard :followings="followings" />
-        <UserFollowersCard />
+        <UserFollowersCard :followers="followers" />
       </div>
       <div class="col-md-8">
         <UserCommentsCard />
