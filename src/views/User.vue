@@ -3,10 +3,11 @@
     <UserProfileCard
       :user="user"
       :is-current-user="currentUser.id === user.id"
+      :initial-is-followed="isFollowed"
     />
     <div class="row">
       <div class="col-md-4">
-        <UserFollowingsCard />
+        <UserFollowingsCard :followings="followings" />
         <UserFollowersCard />
       </div>
       <div class="col-md-8">
@@ -1276,13 +1277,11 @@ const dummyData = {
 };
 const dummyUser = {
   currentUser: {
-    id: 1,
+    id: 2,
     name: "管理者",
     email: "root@example.com",
     image: "https://i.pravatar.cc/300",
-    isAdmin: true,
   },
-  isAuthenticated: true,
 };
 import UserProfileCard from "./../components/UserProfileCard.vue";
 import UserFollowingsCard from "./../components/UserFollowingsCard.vue";
@@ -1316,7 +1315,7 @@ export default {
       followers: [],
       comments: [],
       favoritedRestaurants: [],
-      currentUser: dummyUser.currentUser
+      currentUser: dummyUser.currentUser,
     };
   },
   created() {

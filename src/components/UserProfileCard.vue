@@ -22,20 +22,27 @@
               <strong>{{ user.followersLength }}</strong> followers (追隨者)
             </li>
           </ul>
-          <p></p>
-          <form
-            action="/following/1?_method=DELETE"
-            method="POST"
-            style="display: contents"
-          >
-            <template v-if="isCurrentUser">
-              <div class="btn btn-primary"> Edit</div>
-            </template>
-            <template v-else>
-              <button type="submit" class="btn btn-danger">取消追蹤</button>
-            </template>
-          </form>
-          <p></p>
+          <template v-if="isCurrentUser">
+            <div class="btn btn-primary">Edit</div>
+          </template>
+          <template v-else>
+            <button
+              v-if="isFollowed"
+              type="button"
+              class="btn btn-danger"
+              @click.stop.prevent="deleteFollowing"
+            >
+              取消追蹤
+            </button>
+            <button
+              v-else
+              type="button"
+              class="btn btn-primary"
+              @click.stop.prevent="addFollowing"
+            >
+              追蹤
+            </button>
+          </template>
         </div>
       </div>
     </div>
@@ -51,6 +58,23 @@ export default {
     isCurrentUser: {
       type: Boolean,
       required: true,
+    },
+    initialIsFollowed: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      isFollowed: this.initialIsFollowed,
+    };
+  },
+  methods: {
+    addFollowing() {
+      this.isFollowed = true;
+    },
+    deleteFollowing() {
+      this.isFollowed = false;
     },
   },
 };
