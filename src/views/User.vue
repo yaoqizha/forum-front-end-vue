@@ -11,7 +11,7 @@
         <UserFollowersCard :followers="followers" />
       </div>
       <div class="col-md-8">
-        <UserCommentsCard />
+        <UserCommentsCard :comments="comments" />
         <UserFavoritedRestaurantsCard />
       </div>
     </div>
@@ -1341,6 +1341,7 @@ export default {
       this.user.email = email;
       this.followers = Followers;
       this.followings = Followings;
+      this.comments = Comments;
       this.favoritedRestaurants = FavoritedRestaurants;
       this.user.followingsLength = Followings.length;
       this.user.followersLength = Followers.length;
