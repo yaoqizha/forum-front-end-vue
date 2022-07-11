@@ -2,21 +2,25 @@
   <div class="card mb-3">
     <div class="row no-gutters">
       <div class="col-md-4">
-        <img
-          src="https://i.imgur.com/WVkkrFw.jpeg"
-          width="300px"
-          height="300px"
-        />
+        <img :src="user.image" width="300px" height="300px" />
       </div>
       <div class="col-md-8">
         <div class="card-body">
-          <h5 class="card-title">root</h5>
-          <p class="card-text">root@example.com</p>
+          <h5 class="card-title">{{ user.name }}</h5>
+          <p class="card-text">{{ user.email }}</p>
           <ul class="list-unstyled list-inline">
-            <li><strong>40</strong> 已評論餐廳</li>
-            <li><strong>5</strong> 收藏的餐廳</li>
-            <li><strong>2</strong> followings (追蹤者)</li>
-            <li><strong>3</strong> followers (追隨者)</li>
+            <li>
+              <strong>{{ user.commentsLength }}</strong> 已評論餐廳
+            </li>
+            <li>
+              <strong>{{ user.favoritedRestaurantsLength }}</strong> 收藏的餐廳
+            </li>
+            <li>
+              <strong>{{ user.followingsLength }}</strong> followings (追蹤者)
+            </li>
+            <li>
+              <strong>{{ user.followersLength }}</strong> followers (追隨者)
+            </li>
           </ul>
           <p></p>
           <form
@@ -24,7 +28,12 @@
             method="POST"
             style="display: contents"
           >
-            <button type="submit" class="btn btn-danger">取消追蹤</button>
+            <template v-if="isCurrentUser">
+              <div class="btn btn-primary"> Edit</div>
+            </template>
+            <template v-else>
+              <button type="submit" class="btn btn-danger">取消追蹤</button>
+            </template>
           </form>
           <p></p>
         </div>
@@ -32,3 +41,17 @@
     </div>
   </div>
 </template>
+<script>
+export default {
+  props: {
+    user: {
+      type: Object,
+      required: true,
+    },
+    isCurrentUser: {
+      type: Boolean,
+      required: true,
+    },
+  },
+};
+</script>
