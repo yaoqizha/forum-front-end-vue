@@ -12,7 +12,9 @@
       </div>
       <div class="col-md-8">
         <UserCommentsCard :comments="comments" />
-        <UserFavoritedRestaurantsCard />
+        <UserFavoritedRestaurantsCard
+          :favorited-restaurants="favoritedRestaurants"
+        />
       </div>
     </div>
   </div>
