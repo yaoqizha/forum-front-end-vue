@@ -12,48 +12,10 @@
         </h4>
         <p>{{ comment.text }}</p>
         by
-        <a href="#"> {{ comment.User.name }} </a>
+        <router-link :to="{ name: 'user', params: { id: comment.User.id } }">
+          {{ comment.User.name }}
+        </router-link>
         {{ comment.createdAt | fromNow }}
-        <hr />
-      </div>
-      <div>
-        <h4>
-          <a href="#"> Golden Hegmann </a>
-        </h4>
-        <p>Commodi a totam.</p>
-        by
-        <a href="#"> user1 </a>
-        at 3 days ago
-        <hr />
-      </div>
-      <div>
-        <h4>
-          <a href="#"> Golden Hegmann </a>
-        </h4>
-        <p>Commodi a totam.</p>
-        by
-        <a href="#"> user1 </a>
-        at 3 days ago
-        <hr />
-      </div>
-      <div>
-        <h4>
-          <a href="#"> Golden Hegmann </a>
-        </h4>
-        <p>Commodi a totam.</p>
-        by
-        <a href="#"> user1 </a>
-        at 3 days ago
-        <hr />
-      </div>
-      <div>
-        <h4>
-          <a href="#"> Golden Hegmann </a>
-        </h4>
-        <p>Commodi a totam.</p>
-        by
-        <a href="#"> user1 </a>
-        at 3 days ago
         <hr />
       </div>
     </div>

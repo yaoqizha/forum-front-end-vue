@@ -5,13 +5,20 @@
     <hr />
     <div class="row text-center">
       <div v-for="user in users" :key="user.id" class="col-3">
-        <!-- <router-link to="#">
+        <router-link
+          :to="{
+            name: 'user',
+            params: {
+              id: user.id,
+            },
+          }"
+        >
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8w9vjCnk4AAUepZnqDTTfOT3FEjtwC9268w&usqp=CAU"
             width="140px"
             height="140px"
           />
-        </router-link> -->
+        </router-link>
         <h2>{{ user.name }}</h2>
         <span class="badge badge-secondary"
           >追蹤人數：{{ user.FollowerCount }}</span
