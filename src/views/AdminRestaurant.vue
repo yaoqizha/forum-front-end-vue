@@ -10,7 +10,7 @@
       <div class="col-md-4">
         <img
           class="img-responsive center-block"
-          :src="restaurant.image | emptyImageFilter"
+          :src="restaurant.image | emptyImage"
           style="width: 250px; margin-bottom: 25px"
         />
         <div class="well">
@@ -51,8 +51,7 @@ const dummyData = {
     opening_hours: "08:00",
     description:
       "Aspernatur tempore et et quaerat nihil itaque nihil. Neque perferendis quia nihil natus vitae. Vel amet optio eum et hic autem voluptatem laborum reiciendis. Tempora unde culpa labore dolorem et et maxime. Possimus ipsa aliquid fuga esse expedita eum nemo id. Ut corrupti inventore modi sapiente tempora quia dicta aperiam.",
-    image:
-      "https://loremflickr.com/320/240/restaurant,food/?random=52.129930969408036",
+    image: "",
     viewCounts: 0,
     createdAt: "2022-07-05T13:49:01.000Z",
     updatedAt: "2022-07-05T13:49:01.000Z",
@@ -68,7 +67,6 @@ const dummyData = {
 export default {
   name: "AdminRestaurant",
   mixins: [emptyImageFilter],
-
   data() {
     return {
       restaurant: {

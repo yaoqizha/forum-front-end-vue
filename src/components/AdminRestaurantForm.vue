@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.stop.prevent="handleSubmit">
     <div class="form-group">
       <label for="name">Name</label>
       <input
@@ -155,11 +155,10 @@ const dummyData = {
 
 export default {
   name: "AdminRestaurantForm",
-  data() {
-    return {
-      categories: [],
-      restaurant: {
-        id: -1,
+  props: {
+    initialRestaurant: {
+      type: Object,
+      default: () => ({
         name: "",
         categoryId: "",
         tel: "",
@@ -167,6 +166,14 @@ export default {
         description: "",
         image: "",
         openingHours: "",
+      }),
+    },
+  },
+  data() {
+    return {
+      categories: [],
+      restaurant: {
+        ...this.initialRestaurant,
       },
     };
   },
@@ -185,6 +192,11 @@ export default {
         const imageURL = window.URL.createObjectURL(files[0]);
         this.restaurant.image = imageURL;
       }
+    },
+    handleSubmit(e) {
+      const form = e.target;
+      const formData = new FormData(form);
+      this.$emit("after-submit", formData);
     },
   },
 };
