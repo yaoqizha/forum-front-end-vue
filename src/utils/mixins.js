@@ -7,3 +7,9 @@ export const fromNowFilter = {
     }
   }
 }
+
+export const emptyImageFilter = {
+  emptyImage(src) {
+    return src || 'https://loremflickr.com/320/240/restaurant,food/?random=52.129930969408036'
+  }
+}

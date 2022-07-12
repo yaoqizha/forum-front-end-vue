@@ -9,13 +9,20 @@
         v-for="following in followings"
         :key="following.id"
       >
-        <img :src="following.image" class="avatar" width="60" height="60" />
+        <img
+          :src="following.image | emptyImageFilter"
+          class="avatar"
+          width="60"
+          height="60"
+        />
       </router-link>
     </div>
   </div>
 </template>
 <script>
+import { emptyImageFilter } from "./../utils/mixins";
 export default {
+  mixins: [emptyImageFilter],
   props: {
     followings: {
       type: Array,
