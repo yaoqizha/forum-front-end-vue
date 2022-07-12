@@ -10,7 +10,7 @@
       <div class="col-md-4">
         <img
           class="img-responsive center-block"
-          :src="restaurant.image | emptyImage"
+          :src="restaurant.image | emptyImageFilter"
           style="width: 250px; margin-bottom: 25px"
         />
         <div class="well">
@@ -68,6 +68,7 @@ const dummyData = {
 export default {
   name: "AdminRestaurant",
   mixins: [emptyImageFilter],
+
   data() {
     return {
       restaurant: {

@@ -8,8 +8,11 @@ export const fromNowFilter = {
   }
 }
 
+
 export const emptyImageFilter = {
-  emptyImage(src) {
-    return src || 'https://loremflickr.com/320/240/restaurant,food/?random=52.129930969408036'
+  filters: {
+    emptyImage(src) {
+      return src || 'https://via.placeholder.com/350x220/DFDFDF?text=No+Image'
+    }
   }
 }
