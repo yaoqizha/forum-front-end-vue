@@ -1279,7 +1279,7 @@ const dummyData = {
 };
 const dummyUser = {
   currentUser: {
-    id: 2,
+    id: 1,
     name: "管理者",
     email: "root@example.com",
     image: "https://i.pravatar.cc/300",
