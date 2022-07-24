@@ -4,6 +4,7 @@ import NotFound from '../views/NotFound.vue'
 import SignIn from '../views/SignIn.vue'
 import Restaurants from '../views/Restaurants.vue'
 import Restaurant from '../views/Restaurant.vue'
+import store from './../store'
 
 Vue.use(VueRouter)
 
@@ -13,7 +14,7 @@ const routes = [
     path: '/',
     name: 'root',
     // component: Restaurants
-    redirect: '/restaurants'
+    redirect: '/signin'
   },
   {
     path: '/signin',
@@ -111,6 +112,12 @@ const router = new VueRouter({
   linkExactActiveClass: 'active',
   mode: 'history',
   routes
+})
+
+
+router.beforeEach((to, from, next) => {
+  store.dispatch('fetchCurrentUser')
+  next()
 })
 
 export default router

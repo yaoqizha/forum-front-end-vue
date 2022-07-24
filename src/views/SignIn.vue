@@ -34,7 +34,12 @@
         />
       </div>
 
-      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">
+      <button
+        class="btn btn-lg btn-primary btn-block mb-3"
+        type="submit"
+        @click="handleSubmit(e)"
+        :disabled="isProcessing"
+      >
         Submit
       </button>
 
@@ -48,22 +53,88 @@
 </template>
 
 <script>
+import authorizationAPI from "./../apis/authorization";
+import { Toast } from "./../utils/helpers";
 export default {
   data() {
     return {
       email: "",
       password: "",
+      isProcessing: false,
     };
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        email: this.email,
-        password: this.password,
-      });
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log("data", data);
+    async handleSubmit() {
+      try {
+        if (!this.email || !this.password) {
+          Toast.fire({
+            icon: "warning",
+            title: "請輸入email和password",
+          });
+          return;
+        }
+
+        this.isProcessing = true;
+
+        const response = await authorizationAPI.signIn({
+          email: this.email,
+          password: this.password,
+        });
+
+        const { data, statusText } = response;
+
+        if (statusText !== "OK" || data.status !== "success") {
+          throw new Error(data.message);
+        }
+
+        localStorage.setItem("token", data.token);
+        //將資料傳到 Vuex 中
+        this.$store.commit("setCurrentUser", data.user);
+
+        this.$router.push("/restaurants");
+      } catch {
+        this.isProcessing = false;
+        this.password = "";
+        //顯示錯誤提示;
+        Toast.fire({
+          icon: "warning",
+          title: "輸入的帳號密碼有誤",
+        });
+      }
     },
+    // handleSubmit() {
+    //   if (!this.email || !this.password) {
+    //     Toast.fire({
+    //       icon: "warning",
+    //       title: "請輸入email和password",
+    //     });
+    //     return;
+    //   }
+    //   this.isProcessing = true;
+    //   authorizationAPI
+    //     .signIn({
+    //       email: this.email,
+    //       password: this.password,
+    //     })
+    //     .then((response) => {
+    //       // TODO: 取得 API 請求後的資料
+    //       const { data } = response;
+    //       if (data.status !== "success") {
+    //         throw new Error(data.message);
+    //       }
+    //       localStorage.setItem("token", data.token);
+    //       this.$router.push("restaurants");
+    //     })
+    //     .catch(() => {
+    //       this.isProcessing = false;
+    //       this.password = "";
+    //       //顯示錯誤提示
+    //       Toast.fire({
+    //         icon: "warning",
+    //         title: "輸入的帳號密碼有誤",
+    //       });
+    //     });
+    // },
   },
 };
 </script>

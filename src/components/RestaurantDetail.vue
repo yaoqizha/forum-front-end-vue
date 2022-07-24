@@ -1,8 +1,10 @@
 <template>
   <div class="row">
     <div class="col-md-12 mb-3">
-      <h1>Judy Runte</h1>
-      <p class="badge badge-secondary mt-1 mb-3">義大利料理</p>
+      <h1>{{ restaurant.name }}</h1>
+      <p class="badge badge-secondary mt-1 mb-3">
+        {{ restaurant.categoryName }}
+      </p>
     </div>
     <div class="col-lg-4">
       <img
@@ -14,15 +16,15 @@
         <ul class="list-unstyled">
           <li>
             <strong>Opening Hour:</strong>
-            08:00
+            {{ restaurant.openingHours }}
           </li>
           <li>
             <strong>Tel:</strong>
-            (918) 827-1962
+            {{ restaurant.tel }}
           </li>
           <li>
             <strong>Address:</strong>
-            98138 Elisa Road
+            {{ restaurant.address }}
           </li>
         </ul>
       </div>
@@ -83,6 +85,14 @@ export default {
     return {
       restaurant: this.initialRestaurant,
     };
+  },
+  watch: {
+    initialRestaurant(newValue) {
+      this.restaurant = {
+        ...this.restaurant,
+        ...newValue,
+      };
+    },
   },
   methods: {
     addFavorite() {

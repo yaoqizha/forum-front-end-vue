@@ -83,37 +83,9 @@
 
 <script>
 import AdminNav from "./../components/AdminNav.vue";
-import { v4 as uuidv4 } from "uuid";
+import adminAPI from "./../apis/admin";
+import { Toast } from "./../utils/helpers";
 //  2. 定義暫時使用的資料
-const dummyData = {
-  categories: [
-    {
-      id: 1,
-      name: "中式料理",
-      createdAt: "2019-06-22T09:00:43.000Z",
-      updatedAt: "2019-06-22T09:00:43.000Z",
-    },
-    {
-      id: 2,
-      name: "日本料理",
-      createdAt: "2019-06-22T09:00:43.000Z",
-      updatedAt: "2019-06-22T09:00:43.000Z",
-    },
-    {
-      id: 3,
-      name: "義大利料理",
-      createdAt: "2019-06-22T09:00:43.000Z",
-      updatedAt: "2019-06-22T09:00:43.000Z",
-    },
-    {
-      id: 4,
-      name: "墨西哥料理",
-      createdAt: "2019-06-22T09:00:43.000Z",
-      updatedAt: "2019-06-22T09:00:43.000Z",
-    },
-  ],
-};
-
 export default {
   components: {
     AdminNav,
@@ -131,31 +103,91 @@ export default {
   },
   methods: {
     // 4. 定義 `fetchCategories` 方法，把 `dummyData` 帶入 Vue 物件
-    fetchCategories() {
-      this.categories = dummyData.categories.map((category) => ({
-        ...category,
-        isEditing: false,
-        nameCached: "",
-      }));
+    async fetchCategories() {
+      try {
+        const { data } = await adminAPI.categories.get();
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.categories = data.categories.map((category) => ({
+          ...category,
+          isEditing: false,
+          nameCached: "",
+        }));
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得餐廳類別，請稍後再試",
+        });
+      }
     },
-    createCategory() {
-      //ToDo:透過API告知伺服器新增餐廳類別
-      //新增類別增添到陣列
-      if (!this.newCategoryName) return;
-      this.categories.push({
-        id: uuidv4(),
-        name: this.newCategoryName,
-      });
-      this.newCategoryName = "";
+    async createCategory() {
+      try {
+        const { data } = await adminAPI.categories.create({
+          name: this.newCategoryName,
+        });
+        console.log("data", data);
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        if (!this.newCategoryName) {
+          return this.categories.push({
+            id: data.categoryId,
+            name: this.newCategoryName,
+          });
+        }
+        // this.categories.push({
+        //   id: data.categoryId,
+        //   name: this.newCategoryName,
+        //   isEditing: false,
+        // });
+
+        this.newCategoryName = "";
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法新增餐廳類別，請稍後再試",
+        });
+      }
     },
-    deleteCategory(categoryId) {
-      this.categories = this.categories.filter(
-        (category) => category.id !== categoryId
-      );
+    async deleteCategory(categoryId) {
+      try {
+        const { data } = await adminAPI.categories.delete({ categoryId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.categories = this.categories.filter(
+          (category) => category.id !== categoryId
+        );
+        Toast.fire({
+          icon: "success",
+          title: "成功刪除該餐廳類別",
+        });
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法刪除該餐廳類別，請稍後再試",
+        });
+      }
     },
-    updateCategory({ categoryId }) {
+    async updateCategory({ categoryId, name }) {
+      try {
+        const { data } = await adminAPI.categories.update({ categoryId, name });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.toggleIsEditing(categoryId);
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法更新餐廳類別，請稍後再試",
+        });
+      }
       // TODO: 透過 API 去向伺服器更新餐廳類別名稱
-      this.toggleIsEditing(categoryId);
     },
     toggleIsEditing(categoryId) {
       this.categories = this.categories.map((category) => {

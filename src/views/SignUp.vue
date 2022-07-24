@@ -15,7 +15,6 @@
           class="form-control"
           placeholder="name"
           autocomplete="username"
-          required
           autofocus
         />
       </div>
@@ -30,7 +29,6 @@
           class="form-control"
           placeholder="email"
           autocomplete="email"
-          required
         />
       </div>
 
@@ -44,7 +42,6 @@
           class="form-control"
           placeholder="Password"
           autocomplete="new-password"
-          required
         />
       </div>
 
@@ -58,7 +55,6 @@
           class="form-control"
           placeholder="Password"
           autocomplete="new-password"
-          required
         />
       </div>
 
@@ -77,6 +73,8 @@
   </div>
 </template>
 <script>
+import authorizationAPI from "./../apis/authorization";
+import { Toast } from "./../utils/helpers";
 export default {
   data() {
     return {
@@ -87,15 +85,49 @@ export default {
     };
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        passwordCheck: this.passwordCheck,
-      });
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log("data", data);
+    async handleSubmit() {
+      try {
+        if (
+          !this.name ||
+          !this.email ||
+          !this.password ||
+          !this.passwordCheck
+        ) {
+          Toast.fire({
+            icon: "warning",
+            title: "請確認已填寫所有欄位",
+          });
+          return;
+        }
+        if (this.password !== this.passwordCheck) {
+          Toast.fire({
+            icon: "warning",
+            title: "兩次輸入的密碼不同",
+          });
+          this.passwordCheck = "";
+          return;
+        }
+        const { data } = await authorizationAPI.signUp({
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          passwordCheck: this.passwordCheck,
+        });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "data.message",
+        });
+        this.$router.push("/signin");
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "warning",
+          title: `無法註冊-${error.message}`,
+        });
+      }
     },
   },
 };
