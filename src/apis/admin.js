@@ -14,6 +14,7 @@ export default {
       })
     },
     update({ categoryId, name }) {
+      console.log('api', name)
       return apiHelper.put(`/admin/categories/${categoryId}`, { name }, {
         headers: { Authorization: `Bearer ${getToken()}` }
       })

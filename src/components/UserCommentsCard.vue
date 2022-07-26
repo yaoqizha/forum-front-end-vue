@@ -10,7 +10,7 @@
         :to="{ name: 'restaurant', params: { id: comment.Restaurant.id } }"
       >
         <img
-          :src="comment.Restaurant.image | emptyImageFilter"
+          :src="comment.Restaurant.image | emptyImage"
           class="avatar"
           width="60"
           height="60"

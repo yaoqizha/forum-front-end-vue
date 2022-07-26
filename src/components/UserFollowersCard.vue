@@ -15,7 +15,7 @@
         :key="follower.id"
       >
         <img
-          :src="follower.image | emptyImageFilter"
+          :src="follower.image | emptyImage"
           class="avatar"
           width="60"
           height="60"

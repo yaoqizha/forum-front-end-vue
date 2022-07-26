@@ -10,7 +10,6 @@
             type="text"
             class="form-control"
             placeholder="新增餐廳類別..."
-            @click.stop.prevent="createCategory"
           />
         </div>
         <div class="col-auto">
@@ -63,7 +62,12 @@
               v-show="category.isEditing"
               type="button"
               class="btn btn-link mr-2"
-              @click.stop.prevent="updateCategory({ categoryId: category.id })"
+              @click.stop.prevent="
+                updateCategory({
+                  categoryId: category.id,
+                  name: category.name,
+                })
+              "
             >
               Save
             </button>
@@ -124,6 +128,13 @@ export default {
     },
     async createCategory() {
       try {
+        if (!this.newCategoryName) {
+          Toast.fire({
+            icon: "error",
+            title: "請輸入餐廳類別",
+          });
+          return;
+        }
         const { data } = await adminAPI.categories.create({
           name: this.newCategoryName,
         });
@@ -131,12 +142,11 @@ export default {
         if (data.status === "error") {
           throw new Error(data.message);
         }
-        if (!this.newCategoryName) {
-          return this.categories.push({
-            id: data.categoryId,
-            name: this.newCategoryName,
-          });
-        }
+
+        this.categories.push({
+          id: data.categoryId,
+          name: this.newCategoryName,
+        });
         // this.categories.push({
         //   id: data.categoryId,
         //   name: this.newCategoryName,
@@ -175,6 +185,7 @@ export default {
     },
     async updateCategory({ categoryId, name }) {
       try {
+        console.log("name", name);
         const { data } = await adminAPI.categories.update({ categoryId, name });
         if (data.status === "error") {
           throw new Error(data.message);
