@@ -13,8 +13,7 @@
   </form>
 </template>
 <script>
-
-import { v4 as uuidv4 } from "uuid"
+import { v4 as uuidv4 } from "uuid";
 
 export default {
   data() {
@@ -42,3 +41,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.form-group {
+  margin: 21px 0 8px;
+}
+</style>

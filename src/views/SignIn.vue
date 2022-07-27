@@ -37,7 +37,7 @@
       <button
         class="btn btn-lg btn-primary btn-block mb-3"
         type="submit"
-        @click="handleSubmit(e)"
+        @click="handleSubmit()"
         :disabled="isProcessing"
       >
         Submit

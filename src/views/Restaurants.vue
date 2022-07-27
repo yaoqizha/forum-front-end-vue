@@ -49,7 +49,6 @@ export default {
     };
   },
   created() {
-    console.log(this.$route.query);
     const { page = "", categoryId = "" } = this.$route.query;
     this.fetchRestaurants({ queryPage: page, queryCategoryId: categoryId });
   },
